@@ -1,9 +1,10 @@
 package pl.patryk.wine.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
-@Entity
+@Entity(name = "tproducer")
 public class Producer {
 
     @Id
@@ -12,7 +13,7 @@ public class Producer {
     private String name;
     private String country;
     @OneToMany(mappedBy = "producer")
-    private List<Wine> wines;
+    private List<Wine> wines = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -44,5 +45,15 @@ public class Producer {
 
     public void setWines(List<Wine> wines) {
         this.wines = wines;
+    }
+
+    @Override
+    public String toString() {
+        return "Producer{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", country='" + country + '\'' +
+                ", wines=" + wines.size() +
+                '}';
     }
 }

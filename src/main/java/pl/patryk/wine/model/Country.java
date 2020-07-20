@@ -1,19 +1,21 @@
 package pl.patryk.wine.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-@Entity
+@Entity(name = "tcountry")
 public class Country {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String countryName;
-    private String countryCode;
     @OneToMany (mappedBy = "country")
-    private List<Region> regions;
-
+    private List<Region> regions = new ArrayList<>();
+    @OneToMany(mappedBy = "country")
+    private List<Wine> wines = new ArrayList<>();
     public Long getId() {
         return id;
     }
@@ -30,19 +32,53 @@ public class Country {
         this.countryName = countryName;
     }
 
-    public String getCountryCode() {
-        return countryCode;
-    }
-
-    public void setCountryCode(String countryCode) {
-        this.countryCode = countryCode;
-    }
-
     public List<Region> getRegions() {
         return regions;
     }
 
     public void setRegions(List<Region> regions) {
         this.regions = regions;
+    }
+
+    public List<Wine> getWines() {
+        return wines;
+    }
+
+    public void setWines(List<Wine> wines) {
+        this.wines = wines;
+    }
+
+    @Override
+    public String toString() {
+
+        return "Country{" +
+                "id=" + id +
+                ", countryName='" + countryName + '\'' +
+                ", regions=" + getRegionsToString() +
+                '}';
+    }
+
+    public String getRegionsToString() {
+        StringBuilder sb = new StringBuilder();
+        for(Region region : this.regions) {
+            sb.append(region.getRegionName());
+        }
+        return sb.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Country country = (Country) o;
+        return Objects.equals(id, country.id) &&
+                Objects.equals(countryName, country.countryName) &&
+                Objects.equals(regions, country.regions) &&
+                Objects.equals(wines, country.wines);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, countryName, regions, wines);
     }
 }

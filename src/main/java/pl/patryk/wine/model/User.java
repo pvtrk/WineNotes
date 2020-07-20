@@ -1,9 +1,13 @@
 package pl.patryk.wine.model;
 
-import javax.persistence.*;
-import java.util.List;
+import pl.patryk.wine.model.enums.UserRole;
 
-@Entity
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+@Entity(name = "tuser")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,8 +17,9 @@ public class User {
     private String email;
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
-    @OneToMany(mappedBy = "user")
-    private List<Note> notes;
+    @OneToMany(mappedBy = "user",
+            cascade = CascadeType.REMOVE)
+    private List<Note> notes = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -54,5 +59,46 @@ public class User {
 
     public void setUserRole(UserRole userRole) {
         this.userRole = userRole;
+    }
+
+    public List<Note> getNotes() {
+        return notes;
+    }
+
+    public void setNotes(List<Note> notes) {
+        this.notes = notes;
+    }
+
+    public void addNote(Note note) {
+        note.setUser(this);
+        this.getNotes().add(note);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", login='" + login + '\'' +
+                ", pass='" + pass + '\'' +
+                ", email='" + email + '\'' +
+                ", userRole=" + userRole +
+                ", notes=" + notes.size() +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return login.equals(user.login) &&
+                pass.equals(user.pass) &&
+                email.equals(user.email) &&
+                userRole == user.userRole;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(login, pass, email, userRole);
     }
 }

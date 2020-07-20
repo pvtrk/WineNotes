@@ -1,4 +1,4 @@
-package pl.patryk.wine.model;
+package pl.patryk.wine.model.enums;
 
 public enum UserRole {
     USER,

@@ -1,8 +1,13 @@
 package pl.patryk.wine.model;
 
-import javax.persistence.*;
+import pl.patryk.wine.model.enums.WineColor;
+import pl.patryk.wine.model.enums.WineType;
 
-@Entity
+import javax.persistence.*;
+import java.util.Objects;
+
+
+@Entity(name = "twine")
 public class Wine {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -11,8 +16,12 @@ public class Wine {
     @ManyToOne
     @JoinColumn(name = "producerId")
     private Producer producer;
-    private String country;
-    private String region;
+    @ManyToOne
+    @JoinColumn(name = "countryId")
+    private Country country;
+    @ManyToOne
+    @JoinColumn(name = "regionId")
+    private Region region;
     private Integer vintage;
     @Enumerated(EnumType.STRING)
     private WineType type;
@@ -31,19 +40,19 @@ public class Wine {
         this.producer = producer;
     }
 
-    public String getCountry() {
+    public Country getCountry() {
         return country;
     }
 
-    public void setCountry(String country) {
+    public void setCountry(Country country) {
         this.country = country;
     }
 
-    public String getRegion() {
+    public Region getRegion() {
         return region;
     }
 
-    public void setRegion(String region) {
+    public void setRegion(Region region) {
         this.region = region;
     }
 
@@ -84,42 +93,29 @@ public class Wine {
         return "Wine{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", producer='" + producer + '\'' +
+                ", producer='" + producer.getName() + '\'' +
                 ", vintage=" + vintage +
-                ", type=" + type +
-                ", color=" + color +
+                ", type=" + type.getDisplayValue() +
+                ", color=" + color.getDisplayValue() +
                 '}';
     }
 
-    enum WineType {
-        STILL("Spokojne"),
-        SPARKLING("Musujące"),
-        PETNAT("Pet Nat");
-
-        private String displayValue;
-
-        WineType(String displayValue) {
-            this.displayValue = displayValue;
-        }
-
-        public String getDisplayValue() {
-            return this.displayValue;
-        }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Wine wine = (Wine) o;
+        return name.equals(wine.name) &&
+                producer.equals(wine.producer) &&
+                country.equals(wine.country) &&
+                region.equals(wine.region) &&
+                vintage.equals(wine.vintage) &&
+                type == wine.type &&
+                color == wine.color;
     }
 
-    enum WineColor {
-        WHITE("Białe"),
-        RED("Czerwone"),
-        ORANGE("Pomarańczowe");
-
-        private String displayValue;
-
-        WineColor(String displayValue) {
-            this.displayValue = displayValue;
-        }
-
-        public String getDisplayValue() {
-            return this.displayValue;
-        }
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, producer, country, region, vintage, type, color);
     }
 }
