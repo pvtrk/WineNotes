@@ -12,7 +12,8 @@ public class Country {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String countryName;
-    @OneToMany (mappedBy = "country")
+    @OneToMany (mappedBy = "country",
+    cascade = CascadeType.ALL)
     private List<Region> regions = new ArrayList<>();
     @OneToMany(mappedBy = "country")
     private List<Wine> wines = new ArrayList<>();
@@ -48,6 +49,15 @@ public class Country {
         this.wines = wines;
     }
 
+    public void addRegion(Region region) {
+        region.setCountry(this);
+        this.getRegions().add(region);
+    }
+
+    public void addWine(Wine wine) {
+        wine.setCountry(this);
+        this.getWines().add(wine);
+    }
     @Override
     public String toString() {
 

@@ -11,10 +11,11 @@ class Region {
     @GeneratedValue
     private Long id;
     private String regionName;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "countryId")
     private Country country;
-    @OneToMany(mappedBy = "region")
+    @OneToMany(mappedBy = "region",
+            cascade = CascadeType.ALL)
     private List<Wine> wines = new ArrayList<>();
 
     public Long getId() {
@@ -39,6 +40,19 @@ class Region {
 
     public void setCountry(Country country) {
         this.country = country;
+    }
+
+    public List<Wine> getWines() {
+        return wines;
+    }
+
+    public void setWines(List<Wine> wines) {
+        this.wines = wines;
+    }
+
+    public void addWine(Wine wine) {
+        wine.setRegion(this);
+        getWines().add(wine);
     }
 
     @Override

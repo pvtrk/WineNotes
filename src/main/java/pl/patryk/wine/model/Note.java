@@ -15,10 +15,13 @@ public class Note {
     @ManyToOne
     @JoinColumn(name = "userId")
     private User user;
+    @ManyToOne
+    @JoinColumn(name="wineId")
+    private Wine wine;
     private WineColor wineColor;
     private ColorIntensity colorIntensity;
     private AcidityLvl acidityLvl;
-    private AromaIntensity aromaIntesity;
+    private AromaIntensity aromaIntensity;
     private TanninsLvl tanninsLvl;
     private FinishLength finishLength;
     private OverallRating overallRating;
@@ -73,12 +76,12 @@ public class Note {
         this.acidityLvl = acidityLvl;
     }
 
-    public AromaIntensity getAromaIntesity() {
-        return aromaIntesity;
+    public AromaIntensity getAromaIntensity() {
+        return aromaIntensity;
     }
 
-    public void setAromaIntesity(AromaIntensity aromaIntesity) {
-        this.aromaIntesity = aromaIntesity;
+    public void setAromaIntensity(AromaIntensity aromaIntensity) {
+        this.aromaIntensity = aromaIntensity;
     }
 
     public TanninsLvl getTanninsLvl() {
@@ -113,6 +116,14 @@ public class Note {
         this.creationDate = creationDate;
     }
 
+    public Wine getWine() {
+        return wine;
+    }
+
+    public void setWine(Wine wine) {
+        this.wine = wine;
+    }
+
     @Override
     public String toString() {
         return "Note{" +
@@ -122,7 +133,7 @@ public class Note {
                 ", wineColor=" + wineColor.getDisplayValue() +
                 ", colorIntensity=" + colorIntensity.getDisplayValue() +
                 ", acidityLvl=" + acidityLvl.getDisplayValue() +
-                ", aromaIntesity=" + aromaIntesity.getDisplayValue() +
+                ", aromaIntesity=" + aromaIntensity.getDisplayValue() +
                 ", tanninsLvl=" + tanninsLvl.getDisplayValue() +
                 ", finishLength=" + finishLength.getDisplayValue() +
                 ", overallRating=" + overallRating.getDisplayValue() +
