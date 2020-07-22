@@ -18,7 +18,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
     @OneToMany(mappedBy = "user",
-            cascade = CascadeType.REMOVE)
+            cascade = CascadeType.MERGE)
     private List<Note> notes = new ArrayList<>();
 
     public Long getId() {

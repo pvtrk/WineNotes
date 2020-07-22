@@ -1,7 +1,8 @@
 package pl.patryk.wine.model.enums;
 
 public enum TanninsLvl {
-    Low("low"),
+    NONE("none"),
+    LOW("low"),
     MEDIUMINUS("medium-"),
     MEDIUM("medium"),
     MEDIUMPLUS("medium+"),

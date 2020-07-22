@@ -4,7 +4,8 @@ public enum OverallRating {
     POOR("poor", 1),
     ACCEPTABLE("acceptable", 2),
     GOOD("good", 3),
-    VERYGOOD("very good", 4);
+    VERYGOOD("very good", 4),
+    OUTSTANDING("outstanding", 5);
 
     private String displayValue;
     private int numberValue;

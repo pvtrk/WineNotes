@@ -11,11 +11,11 @@ class Region {
     @GeneratedValue
     private Long id;
     private String regionName;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "countryId")
     private Country country;
     @OneToMany(mappedBy = "region",
-            cascade = CascadeType.ALL)
+            cascade = CascadeType.MERGE)
     private List<Wine> wines = new ArrayList<>();
 
     public Long getId() {

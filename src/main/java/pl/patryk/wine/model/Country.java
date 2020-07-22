@@ -13,9 +13,10 @@ public class Country {
     private Long id;
     private String countryName;
     @OneToMany (mappedBy = "country",
-    cascade = CascadeType.ALL)
+    cascade = CascadeType.MERGE)
     private List<Region> regions = new ArrayList<>();
-    @OneToMany(mappedBy = "country")
+    @OneToMany(mappedBy = "country",
+    cascade = CascadeType.MERGE)
     private List<Wine> wines = new ArrayList<>();
     public Long getId() {
         return id;
@@ -58,6 +59,15 @@ public class Country {
         wine.setCountry(this);
         this.getWines().add(wine);
     }
+
+    public Country(String countryName) {
+        this.id = id;
+        this.countryName = countryName;
+    }
+
+    public Country() {
+    }
+
     @Override
     public String toString() {
 

@@ -4,6 +4,8 @@ import pl.patryk.wine.model.enums.WineColor;
 import pl.patryk.wine.model.enums.WineType;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 
@@ -12,20 +14,34 @@ public class Wine {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotNull
+    @NotEmpty
     private String name;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "producerId")
+    @NotNull
+    @NotEmpty
     private Producer producer;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "countryId")
+    @NotNull
+    @NotEmpty
     private Country country;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "regionId")
+    @NotNull
+    @NotEmpty
     private Region region;
+    @NotNull
+    @NotEmpty
     private Integer vintage;
     @Enumerated(EnumType.STRING)
+    @NotNull
+    @NotEmpty
     private WineType type;
     @Enumerated(EnumType.STRING)
+    @NotNull
+    @NotEmpty
     private WineColor color;
 
     public Long getId() {
@@ -34,6 +50,10 @@ public class Wine {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Producer getProducer() {
+        return producer;
     }
 
     public void setProducer(Producer producer) {
@@ -88,6 +108,21 @@ public class Wine {
         this.color = color;
     }
 
+    public Wine(String name, Producer producer,
+                Country country, Region region,
+                Integer vintage, WineType type, WineColor color) {
+        this.name = name;
+        this.producer = producer;
+        this.country = country;
+        this.region = region;
+        this.vintage = vintage;
+        this.type = type;
+        this.color = color;
+    }
+
+    public Wine() {
+    }
+
     @Override
     public String toString() {
         return "Wine{" +
@@ -117,5 +152,15 @@ public class Wine {
     @Override
     public int hashCode() {
         return Objects.hash(name, producer, country, region, vintage, type, color);
+    }
+
+    public static String getNameVintageProducerCountry(Wine wine) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(wine.getName()).append(" (").append(wine.getColor().getDisplayValue())
+                .append(", ").append(wine.getVintage()).append(", ")
+                .append(wine.getProducer().getName()).append(", ").append(wine.getCountry().getCountryName())
+                .append(", ").append(wine.getRegion().getRegionName()).append(")");
+
+        return  sb.toString();
     }
 }

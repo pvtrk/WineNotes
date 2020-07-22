@@ -6,7 +6,7 @@ import pl.patryk.wine.dao.NoteDAO;
 import pl.patryk.wine.model.Note;
 import pl.patryk.wine.service.INoteService;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 @Service
@@ -23,9 +23,21 @@ public class NoteService implements INoteService {
     }
 
     @Override
-    public List<Note> findNotesForUser(Long userId) {
-        List<Note> notes = new ArrayList<>();
-        notes = noteDAO.findNotesForUser(userId);
-        return notes;
+    public List<Note> findAllNotesForUser(Long userId) {
+        return  noteDAO.findAllNotesForUser(userId);
+
+    }
+
+    @Override
+    public List<Note> findSearchedNotes(Long userId, String filterText) {
+        return noteDAO.findSearchedNotes(userId, filterText);
+    }
+
+    public List<Note> findNotesForUser(Long userId, String filterText) {
+        if (filterText == null || filterText.isEmpty()) {
+            return findAllNotesForUser(userId);
+        } else {
+            return findSearchedNotes(userId, filterText);
+        }
     }
 }

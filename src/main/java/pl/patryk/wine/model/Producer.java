@@ -11,11 +11,11 @@ public class Producer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "country")
     private Country country;
     @OneToMany(mappedBy = "producer",
-    cascade = CascadeType.ALL)
+    cascade = CascadeType.MERGE)
     private List<Wine> wines = new ArrayList<>();
 
     public Long getId() {
@@ -55,6 +55,10 @@ public class Producer {
         getWines().add(wine);
     }
 
+    public static String getNameAndCountry(Producer producer) {
+        return producer.getName() + " (" + producer.getCountry().getCountryName() + ")";
+    }
+
     @Override
     public String toString() {
         return "Producer{" +
@@ -64,4 +68,6 @@ public class Producer {
                 ", wines=" + wines.size() +
                 '}';
     }
+
+
 }
