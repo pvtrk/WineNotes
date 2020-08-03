@@ -40,4 +40,14 @@ public class NoteService implements INoteService {
             return findSearchedNotes(userId, filterText);
         }
     }
+
+    @Override
+    public void save(Note note) {
+        this.noteDAO.save(note);
+    }
+
+    @Override
+    public void delete(Note note) {
+        this.noteDAO.delete(note);
+    }
 }

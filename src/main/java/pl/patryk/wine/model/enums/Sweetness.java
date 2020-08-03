@@ -12,4 +12,8 @@ public enum Sweetness {
     Sweetness(String displayValue) {
         this.displayValue = displayValue;
     }
+
+    public String getDisplayValue() {
+        return this.displayValue;
+    }
 }

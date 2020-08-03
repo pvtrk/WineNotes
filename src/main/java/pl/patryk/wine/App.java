@@ -17,6 +17,7 @@ public class App {
         UserDAO userDAO = ctx.getBean(UserDAO.class);
         NoteDAO noteDAO = ctx.getBean(NoteDAO.class);
         WineDAO wineDAO = ctx.getBean(WineDAO.class);
+        WineInfoDAO wineInfoDAO = ctx.getBean(WineInfoDAO.class);
         CountryDAO countryDAO = ctx.getBean(CountryDAO.class);
         ProducerDAO producerDAO = ctx.getBean(ProducerDAO.class);
 
@@ -69,25 +70,45 @@ public class App {
         Wine wine2 = new Wine("Sauvignon Blanc", producer2, country2,
                 region2, 2018, WineType.STILL, WineColor.WHITE);
 
-
+        WineInfo wineInfo = new WineInfo();
+        wineInfo.setAlcohol(15.0);
+        wineInfo.setWineColor(WineColor.RED);
+        wineInfo.setWineCountry(country);
+        wineInfo.setWineName("chateaulatour");
+        wineInfo.setProducer("chateau latour");
+        wineInfo.setWineRegion(region);
+        wineInfo.setResidualSugar(15.0);
+        wineInfo.setVintage(1998.0);
+        wineInfo.setWineType(WineType.STILL);
 
 
         Note note = new Note();
         note.setUser(user);
-        note.setAcidityLvl(AcidityLvl.LOW);
-        note.setAromaIntensity(AromaIntensity.HIGH);
-        note.setColorIntensity(ColorIntensity.DEEP);
-        note.setCreationDate(LocalDateTime.now());
-        note.setFinishLength(FinishLength.MEDIUM);
-        note.setOverallRating(OverallRating.ACCEPTABLE);
-        note.setTanninsLvl(TanninsLvl.HIGH);
-        note.setWineColor(WineColor.RED);
-        note.setWine(wine);
-        note.setNote("BARDZO PRZYJEMNE AROMATY CZERESNI");
+        note.setName("Moja nowa notka");
 
-        Note note2 = new Note("Aromaty brzoskwiń", user, wine2, WineColor.WHITE, ColorIntensity.MEDIUM,
-                AcidityLvl.MEDIUMPLUS, AromaIntensity.MEDIUMPLUS, TanninsLvl.NONE,
-                FinishLength.MEDIUMPLUS, OverallRating.VERYGOOD, LocalDateTime.now(), false);
+        note.setWineColor(WineColor.RED);
+        note.setColorIntensity(ColorIntensity.DEEP);
+        note.setColorSpecification(WineColor.RED.getColourSpecification().get(2));
+
+        note.setAromaIntensity(AromaIntensity.HIGH);
+        note.setAromaCharasteristics("Eleganckie aromaty gruszki");
+
+        note.setSweetness(Sweetness.DRY);
+        note.setAcidityLvl(AcidityLvl.LOW);
+        note.setTanninsLvl(TanninsLvl.HIGH);
+        note.setTanninsNature("Smoooth");
+        note.setAlcoholLvl(AlcoholLvl.MEDIUM);
+        note.setBody(Body.FULL);
+        note.setFlavourIntensity(FlavourIntensity.MEDIUMPLUS);
+        note.setFlavourCharasteristics("Blackberries, truffles");
+        note.setOtherObservations("elegant , cheap wine");
+        note.setFinishLength(FinishLength.MEDIUM);
+        note.setOverallRating(OverallRating.VERYGOOD);
+
+        note.setWineInfo(wineInfo);
+        note.setBlind(false);
+        note.setCreationDate(LocalDateTime.now());
+        //note.setNote("BARDZO PRZYJEMNE AROMATY CZERESNI");
 
 
         country2.addWine(wine2);
@@ -99,7 +120,7 @@ public class App {
         producer2.addWine(wine2);
 
         user.addNote(note);
-        user.addNote(note2);
+
 
 
 
@@ -108,8 +129,8 @@ public class App {
 
         wineDAO.save(wine);
         wineDAO.save(wine2);
+        wineInfoDAO.save(note.getWineInfo());
         noteDAO.save(note);
-        noteDAO.save(note2);
 
 
 

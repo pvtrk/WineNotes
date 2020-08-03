@@ -14,10 +14,10 @@ public interface NoteDAO extends JpaRepository<Note, Long> {
     @Query("SELECT n FROM tnote n WHERE user_id =:userId")
     List<Note> findAllNotesForUser(@Param("userId") Long id);
 
-   @Query("SELECT n FROM tnote n WHERE user_id =:userId AND lower(n.wine.name) LIKE LOWER(concat('%', :searchTerm, '%') )" +
+   @Query("SELECT n FROM tnote n WHERE user_id =:userId AND lower(n.wineInfo.wineName) LIKE LOWER(concat('%', :searchTerm, '%') )" +
             "OR lower (n.wineColor) LIKE lower(concat('%', :searchTerm, '%') ) " +
-            "OR lower (n.wine.country.countryName) LIKE lower(concat('%', :searchTerm, '%') )" +
-            "OR lower (n.wine.producer.name) LIKE lower(concat('%', :searchTerm, '%') )")
+            "OR lower (n.wineInfo.wineCountry.countryName) LIKE lower(concat('%', :searchTerm, '%') )" +
+            "OR lower (n.wineInfo.producer) LIKE lower(concat('%', :searchTerm, '%') )")
     List<Note> findSearchedNotes(@Param("userId") Long id, @Param("searchTerm") String searchTerm);
 
 

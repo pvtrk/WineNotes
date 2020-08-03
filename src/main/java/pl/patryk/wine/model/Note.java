@@ -15,13 +15,12 @@ public class Note {
     @ManyToOne
     @JoinColumn(name = "userId")
     private User user;
-    @ManyToOne
-    @JoinColumn(name="wineId")
-    private Wine wine;
+    @OneToOne
+    @JoinColumn(name = "wineInfoId")
+    private WineInfo wineInfo;
     private WineColor wineColor;
     private String colorSpecification;
     private ColorIntensity colorIntensity;
-
 
     private AromaIntensity aromaIntensity;
     private String aromaCharasteristics;
@@ -49,6 +48,14 @@ public class Note {
         this.id = id;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public User getUser() {
         return user;
     }
@@ -57,12 +64,12 @@ public class Note {
         this.user = user;
     }
 
-    public String getName() {
-        return name;
+    public WineInfo getWineInfo() {
+        return wineInfo;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setWineInfo(WineInfo wineInfo) {
+        this.wineInfo = wineInfo;
     }
 
     public WineColor getWineColor() {
@@ -73,6 +80,14 @@ public class Note {
         this.wineColor = wineColor;
     }
 
+    public String getColorSpecification() {
+        return colorSpecification;
+    }
+
+    public void setColorSpecification(String colorSpecification) {
+        this.colorSpecification = colorSpecification;
+    }
+
     public ColorIntensity getColorIntensity() {
         return colorIntensity;
     }
@@ -81,76 +96,12 @@ public class Note {
         this.colorIntensity = colorIntensity;
     }
 
-    public AcidityLvl getAcidityLvl() {
-        return acidityLvl;
-    }
-
-    public void setAcidityLvl(AcidityLvl acidityLvl) {
-        this.acidityLvl = acidityLvl;
-    }
-
     public AromaIntensity getAromaIntensity() {
         return aromaIntensity;
     }
 
     public void setAromaIntensity(AromaIntensity aromaIntensity) {
         this.aromaIntensity = aromaIntensity;
-    }
-
-    public TanninsLvl getTanninsLvl() {
-        return tanninsLvl;
-    }
-
-    public void setTanninsLvl(TanninsLvl tanninsLvl) {
-        this.tanninsLvl = tanninsLvl;
-    }
-
-    public FinishLength getFinishLength() {
-        return finishLength;
-    }
-
-    public void setFinishLength(FinishLength finishLength) {
-        this.finishLength = finishLength;
-    }
-
-    public OverallRating getOverallRating() {
-        return overallRating;
-    }
-
-    public void setOverallRating(OverallRating overallRating) {
-        this.overallRating = overallRating;
-    }
-
-    public LocalDateTime getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(LocalDateTime creationDate) {
-        this.creationDate = creationDate;
-    }
-
-    public Wine getWine() {
-        return wine;
-    }
-
-    public void setWine(Wine wine) {
-        this.wine = wine;
-    }
-
-    public boolean isBlind() {
-        return blind;
-    }
-
-    public void setBlind(boolean blind) {
-        this.blind = blind;
-    }
-
-    public String getColorSpecification() {
-        return colorSpecification;
-    }
-
-    public void setColorSpecification(String colorSpecification) {
-        this.colorSpecification = colorSpecification;
     }
 
     public String getAromaCharasteristics() {
@@ -167,6 +118,22 @@ public class Note {
 
     public void setSweetness(Sweetness sweetness) {
         this.sweetness = sweetness;
+    }
+
+    public AcidityLvl getAcidityLvl() {
+        return acidityLvl;
+    }
+
+    public void setAcidityLvl(AcidityLvl acidityLvl) {
+        this.acidityLvl = acidityLvl;
+    }
+
+    public TanninsLvl getTanninsLvl() {
+        return tanninsLvl;
+    }
+
+    public void setTanninsLvl(TanninsLvl tanninsLvl) {
+        this.tanninsLvl = tanninsLvl;
     }
 
     public String getTanninsNature() {
@@ -217,19 +184,61 @@ public class Note {
         this.otherObservations = otherObservations;
     }
 
-    public Note(String name, User user, Wine wine, WineColor wineColor,
-                ColorIntensity colorIntensity,
-                AcidityLvl acidityLvl, AromaIntensity aromaIntensity,
-                TanninsLvl tanninsLvl, FinishLength finishLength,
-                OverallRating overallRating, LocalDateTime creationDate, boolean blind) {
+    public FinishLength getFinishLength() {
+        return finishLength;
+    }
+
+    public void setFinishLength(FinishLength finishLength) {
+        this.finishLength = finishLength;
+    }
+
+    public OverallRating getOverallRating() {
+        return overallRating;
+    }
+
+    public void setOverallRating(OverallRating overallRating) {
+        this.overallRating = overallRating;
+    }
+
+    public LocalDateTime getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(LocalDateTime creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public boolean isBlind() {
+        return blind;
+    }
+
+    public void setBlind(boolean blind) {
+        this.blind = blind;
+    }
+
+    public Note(String name, User user, WineInfo wineInfo, WineColor color, String colorSpecification,
+                ColorIntensity colorIntensity, AromaIntensity aromaIntensity, String aromaCharasteristics,
+                Sweetness sweetness, AcidityLvl acidityLvl, TanninsLvl tanninsLvl, String tanninsNature,
+                AlcoholLvl alcoholLvl, Body body, FlavourIntensity flavourIntensity, String flavourCharasteristics,
+                String otherObservations, FinishLength finishLength, OverallRating overallRating, LocalDateTime creationDate,
+                boolean blind) {
         this.name = name;
         this.user = user;
-        this.wine = wine;
-        this.wineColor = wineColor;
+        this.wineInfo = wineInfo;
+        this.wineColor = color;
+        this.colorSpecification = colorSpecification;
         this.colorIntensity = colorIntensity;
-        this.acidityLvl = acidityLvl;
         this.aromaIntensity = aromaIntensity;
+        this.aromaCharasteristics = aromaCharasteristics;
+        this.sweetness = sweetness;
+        this.acidityLvl = acidityLvl;
         this.tanninsLvl = tanninsLvl;
+        this.tanninsNature = tanninsNature;
+        this.alcoholLvl = alcoholLvl;
+        this.body = body;
+        this.flavourIntensity = flavourIntensity;
+        this.flavourCharasteristics = flavourCharasteristics;
+        this.otherObservations = otherObservations;
         this.finishLength = finishLength;
         this.overallRating = overallRating;
         this.creationDate = creationDate;
@@ -245,7 +254,7 @@ public class Note {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", user=" + user.getId() +
-                ", wine=" + wine.getName() +
+                ", wine=" + wineInfo.getWineName() +
                 ", creationDate=" + creationDate +
                 '}';
     }
