@@ -10,6 +10,7 @@ import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.radiobutton.RadioButtonGroup;
@@ -18,6 +19,8 @@ import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
+import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.router.Route;
 import com.vaadin.flow.shared.Registration;
 import org.hibernate.sql.Delete;
 import pl.patryk.wine.model.*;
@@ -29,10 +32,12 @@ import pl.patryk.wine.service.impl.BeansSupplier;
 import java.util.ArrayList;
 import java.util.List;
 
-
+@Route(value="addnotes", layout = MainLayout.class)
+@PageTitle("Wine Notes")
 public class EditNoteForm extends FormLayout {
-    Div wineSpecificFields = new Div();
-    Div tastingNoteFields = new Div();
+    FormLayout wineSpecificFields = new FormLayout();
+    FormLayout tastingNoteFields = new FormLayout();
+
     Button save = new Button("Save");
     Button delete = new Button("Delete");
     Button cancel = new Button("Cancel");
@@ -90,15 +95,22 @@ public class EditNoteForm extends FormLayout {
         createTastingNoteFields();
         configureTastingNoteFields();
 
-        setWidthFull();
-
-        add(    name,
+        add(name,
                 blind,
                 wineSpecificFields,
-                tastingNoteFields,
-                createButtonLayout()
+                tastingNoteFields
         );
     }
+
+//    private VerticalLayout getLayout() {
+//        VerticalLayout layout = new VerticalLayout(name,
+//                blind, wineSpecificFields, tastingNoteFields, createButtonLayout());
+//        layout.setSpacing(true);
+//        layout.setAlignItems(FlexComponent.Alignment.STRETCH);
+//        layout.addClassName("add-note-form");
+//        layout.setWidth("100%");
+//        return layout;
+//    }
 
     public void setNote(Note note) {
         noteBinder.setBean(note);
@@ -203,6 +215,7 @@ public class EditNoteForm extends FormLayout {
         tastingNoteFields.add(otherObservations);
         tastingNoteFields.add(finishLength);
         tastingNoteFields.add(overallRating);
+        tastingNoteFields.add(createButtonLayout());
     }
 
     private void configureRadioButtons() {
@@ -224,6 +237,13 @@ public class EditNoteForm extends FormLayout {
         color.addValueChangeListener(event -> {
             colorSpecification.setItems(event.getValue().getColourSpecification());
             wineColor.setValue(event.getValue());
+            if(event.getValue() == WineColor.WHITE) {
+                tanninsLvl.setValue(TanninsLvl.NONE);
+                tanninsNature.setVisible(false);
+            } else {
+                tanninsLvl.clear();
+                tanninsNature.setVisible(true);
+            }
         });
 
         wineColor.setItems(WineColor.values());
@@ -232,6 +252,13 @@ public class EditNoteForm extends FormLayout {
             if(event.getValue() != null) {
                 colorSpecification.setItems(event.getValue().getColourSpecification());
                 color.setValue(event.getValue());
+                if(event.getValue() == WineColor.WHITE) {
+                    tanninsLvl.setValue(TanninsLvl.NONE);
+                    tanninsNature.setVisible(false);
+                } else {
+                    tanninsLvl.clear();
+                    tanninsNature.setVisible(true);
+                }
             }
         });
 

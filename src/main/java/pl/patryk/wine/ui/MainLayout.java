@@ -24,14 +24,15 @@ public class MainLayout extends AppLayout {
         RouterLink myNotesLink = new RouterLink("My Notes", MyNotesView.class);
         myNotesLink.setHighlightCondition(HighlightConditions.sameLocation());
 
-        RouterLink addNotesLink = new RouterLink("Add Note", MyNotesView.class);
+        RouterLink addNotesLink = new RouterLink("Add Note", EditNoteForm.class);
         myNotesLink.setHighlightCondition(HighlightConditions.sameLocation());
 
-        RouterLink SearchForWine = new RouterLink("Search wine", MyNotesView.class);
-        myNotesLink.setHighlightCondition(HighlightConditions.sameLocation());
+        /*RouterLink SearchForWine = new RouterLink("Search wine", MyNotesView.class);
+        myNotesLink.setHighlightCondition(HighlightConditions.sameLocation()); */
 
         addToDrawer(new VerticalLayout(
-                myNotesLink
+                myNotesLink,
+                addNotesLink
         ));
     }
 

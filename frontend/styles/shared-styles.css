@@ -1,5 +1,22 @@
+
+/* Main */
+a[highlight] {
+  font-weight: bold;
+}
+
+.header {
+  padding: 0 var(--lumo-space-m);
+}
+
+.header h1.logo {
+  font-size: 1em;
+  margin: var(--lumo-space-m);
+}
+
+
+/* List notes view */
 .list-view .content {
-  display:flex;
+  display: flex;
 }
 
 .list-view .note-grid {
@@ -11,9 +28,22 @@
   padding: var(--lumo-space-m);
 }
 
-@media all and (max-width:1100px) {
+@media all and (max-width: 1100px) {
   .list-view.editing .toolbar,
   .list-view.editing .note-grid {
-    display:none;
+    display: none;
   }
 }
+.edit-note-form .vaadin-text-field .vaadin-text-area .vaadin-combo-box{
+    margin: 1em;
+  }
+.edit-note-form {
+  align-self: stretch;
+}
+.add-note-form {
+    align-items: stretch;
+  }
+  .v-vertical > .v-spacing {
+    width: 30px;
+  }
+

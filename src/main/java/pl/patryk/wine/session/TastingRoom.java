@@ -6,8 +6,17 @@ import pl.patryk.wine.model.User;
 import java.util.List;
 
 public class TastingRoom {
+    private User owner;
     private List<User> userList;
     private List<Note> noteList;
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
 
     public List<User> getUserList() {
         return userList;

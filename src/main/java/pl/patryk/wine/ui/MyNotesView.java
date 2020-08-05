@@ -8,12 +8,14 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import pl.patryk.wine.model.Note;
 import pl.patryk.wine.model.WineInfo;
 import pl.patryk.wine.model.enums.OverallRating;
 import pl.patryk.wine.model.enums.WineColor;
 import pl.patryk.wine.service.INoteService;
+import pl.patryk.wine.service.IUserService;
 import pl.patryk.wine.service.IWineInfoService;
 import pl.patryk.wine.service.impl.BeansSupplier;
 
@@ -21,7 +23,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 
-@Route("")
+@Route(value= "", layout = MainLayout.class)
+@PageTitle("Wine Notes")
 @CssImport("./styles/shared-styles.css")
 public class MyNotesView extends VerticalLayout {
     private final EditNoteForm form;
@@ -29,10 +32,12 @@ public class MyNotesView extends VerticalLayout {
     TextField filterText = new TextField();
     private INoteService noteService;
     private IWineInfoService wineInfoService;
+    private IUserService userService;
 
     public MyNotesView() {
         this.noteService = BeansSupplier.get(INoteService.class);
         this.wineInfoService = BeansSupplier.get(IWineInfoService.class);
+        this.userService = BeansSupplier.get(IUserService.class);
         addClassName("list-view");
         setSizeFull();
         configureGrid();
@@ -41,7 +46,7 @@ public class MyNotesView extends VerticalLayout {
         form = new EditNoteForm();
         form.addListener(EditNoteForm.SaveEvent.class, this::saveNote);
         form.addListener(EditNoteForm.DeleteEvent.class, this::deleteNote);
-        form.addListener(EditNoteForm.CloseEvent.class, this::closeEditorEvt);
+        form.addListener(EditNoteForm.CloseEvent.class, e -> closeEditor());
 
 
         Div content = new Div(grid, form);
@@ -54,10 +59,6 @@ public class MyNotesView extends VerticalLayout {
 
     }
 
-    private void closeEditorEvt(EditNoteForm.CloseEvent event) {
-        closeEditor();
-    }
-
     private void deleteNote(EditNoteForm.DeleteEvent event) {
         this.noteService.delete(event.getNote());
         this.wineInfoService.delete(event.getWineInfo());
@@ -66,14 +67,17 @@ public class MyNotesView extends VerticalLayout {
 
     private void saveNote(EditNoteForm.SaveEvent event) {
         this.wineInfoService.save(event.getWineInfo());
+        event.getNote().setWineInfo(event.getWineInfo());
+        event.getNote().setUser(this.userService.findUserById(1L));
         this.noteService.save(event.getNote());
         updateList();
+        closeEditor();
     }
 
     private void closeEditor() {
         form.setNote(new Note());
         form.setVisible(false);
-        form.removeClassName("editing");
+        removeClassName("editing");
     }
 
 
@@ -144,7 +148,7 @@ public class MyNotesView extends VerticalLayout {
         } else {
             form.setNote(note);
             form.setVisible(true);
-            form.addClassName("editing");
+            addClassName("editing");
         }
 
 
